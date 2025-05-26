@@ -28,7 +28,7 @@ A feature-packed smart clock using **only onboard components** of the Arduino Un
 ## 📥 Installation
 1. **Clone Repository**:
    ```bash
-   git clone https://github.com/your-username/Arduino-R4-WiFi-Smart-Clock.git
+   git clone https://github.com/SkalmanGPK/Arduino-R4-WiFi-Smart-Clock.git
    cd Arduino-R4-WiFi-Smart-Clock
    Configure Secrets:
 2. Create secrets.h in the project root:
