@@ -1,0 +1,62 @@
+PROGRAM SmartClock:
+    IMPORT REQUIRED LIBRARIES (WiFi, RTC, IMU, LED)
+    LOAD SECRETS (Wi-Fi credentials)
+
+    DEFINE CONSTANTS:
+        NTP_SERVER = "pool.ntp.org"
+        TIMEZONE_OFFSET = -5*3600
+        BUTTON_PIN = 12
+
+    DECLARE GLOBAL VARIABLES:
+        LED matrix controller
+        Display modes (TIME, TEMP, ACCEL)
+        displayActive flag
+        timestamps for motion/scrolling
+
+    SETUP:
+        INITIALIZE serial communication
+        CONFIGURE LED matrix (brightness)
+        SETUP button pin (INPUT_PULLUP)
+        INITIALIZE IMU sensor
+        CONNECT TO WIFI
+        SYNC TIME WITH NTP SERVER
+
+    MAIN LOOP:
+        CHECK button presses (mode cycling)
+        CHECK accelerometer for motion
+        MANAGE display timeout (auto-dim)
+        
+        IF displayActive:
+            SWITCH displayMode:
+                CASE TIME:
+                    GET current time from RTC
+                    FORMAT as HH:MM
+                    DISPLAY on LED matrix
+                CASE TEMP:
+                    READ internal temperature
+                    FORMAT as X.X°C
+                    DISPLAY on LED matrix
+                CASE ACCEL:
+                    READ accelerometer data
+                    MAP values to LED positions
+                    DRAW moving dot visualization
+        ELSE:
+            CLEAR LED matrix
+
+    FUNCTIONS:
+        connectToWiFi():
+            ESTABLISH connection using credentials
+            RETRY until connected
+
+        syncTime():
+            FETCH epoch time from NTP
+            UPDATE RTC if successful
+
+        handleInputs():
+            DEBOUNCE button
+            CYCLE modes on press
+            DETECT motion via accelerometer
+
+        managePower():
+            TURN OFF display after 1min inactivity
+            WAKE ON motion detection
